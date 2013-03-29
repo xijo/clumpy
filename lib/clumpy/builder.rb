@@ -24,13 +24,18 @@ module Clumpy
     end
 
     def add_to_cluster(point)
+      useable_point?(point) or return
       parent_cluster = find_parent_cluster(point)
 
       if parent_cluster
         parent_cluster.points << point
       else
-        clusters << Cluster.new(point, cluster_distance)
+        clusters << cluster_class.new(point, cluster_distance, cluster_options)
       end
+    end
+
+    def useable_point?(point)
+      point.respond_to?(:latitude) && point.respond_to?(:longitude)
     end
 
     def find_parent_cluster(point)
@@ -39,6 +44,14 @@ module Clumpy
 
     def cluster_distance
       latitude_distance / DISTANCE_MODIFIER
+    end
+
+    def cluster_options
+      { values_threshold: options[:values_threshold] }
+    end
+
+    def cluster_class
+      @cluster_class ||= (options[:cluster_class] || Clumpy::Cluster)
     end
 
     def latitude_distance

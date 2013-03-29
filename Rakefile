@@ -9,25 +9,22 @@ task :console do
   sh 'irb -rubygems -I lib -r clumpy.rb'
 end
 
-desc 'Run a simple benchmarking'
+desc 'Run a simple benchmarking (cluster 100_000 random points)'
 task :benchmark do
   require 'benchmark'
-  require 'ostruct'
   require 'clumpy'
 
-  number = 20_000
+  number = 100_000
   points = []
-  max_lat_range = -85..85.05115
-  max_lng_range = -180..180
-  number.times { points << OpenStruct.new(lat: rand(max_lat_range), lng: rand(max_lng_range)) }
+  number.times do
+    points << OpenStruct.new(
+      latitude: rand(Clumpy::Builder::MAX_LATITUDE_DISTANCE),
+      longitude: rand(Clumpy::Builder::MAX_LONGITUDE_DISTANCE)
+    )
+  end
 
   Benchmark.bm do |x|
-    x.report('low precision') do
-      clusters = Clumpy::Builder.new(points).cluster
-    end
-
-    x.report('high precision') do
-      clusters = Clumpy::Builder.new(points, precision: :high).cluster
-    end
+    x.report("normal precision") { Clumpy::Builder.new(points).cluster }
+    x.report("  high precision") { Clumpy::Builder.new(points, precision: :high).cluster }
   end
 end
