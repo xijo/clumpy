@@ -47,7 +47,10 @@ module Clumpy
     end
 
     def cluster_options
-      { values_threshold: options[:values_threshold] }
+      {
+        values_threshold: options[:values_threshold],
+        include_values: options[:include_values]
+      }
     end
 
     def cluster_class

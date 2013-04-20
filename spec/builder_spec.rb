@@ -24,8 +24,8 @@ describe Clumpy::Builder do
   end
 
   it "passes the values threshold through to the cluster" do
-    builder = Clumpy::Builder.new([point1], values_threshold: 100)
-    builder.cluster_options.should eq({ values_threshold: 100 })
+    builder = Clumpy::Builder.new([point1], values_threshold: 100, include_values: true)
+    builder.cluster_options.should eq({ values_threshold: 100, include_values: true })
     clusters = builder.cluster
     clusters.first.instance_variable_get(:@options).should eq builder.cluster_options
   end
