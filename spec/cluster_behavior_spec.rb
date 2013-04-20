@@ -25,6 +25,29 @@ describe Clumpy::ClusterBehavior do
     end
   end
 
+  context "#value_list" do
+    it "returns an empty array if threshold isn't reached" do
+      cluster = Clumpy::Cluster.new(point, 10, values_threshold: 1)
+      cluster.points << other_point
+      cluster.value_list.should eq []
+    end
+
+    it "returns an array of json points if under threshold" do
+      cluster = Clumpy::Cluster.new(point, 10, values_threshold: 1)
+      cluster.value_list.should eq [point]
+    end
+
+    it "returns a list of values if include_values is true" do
+      cluster = Clumpy::Cluster.new(point, 10, values_threshold: 0, include_values: true)
+      cluster.value_list.should eq [point]
+    end
+
+    it "returns a empty list if include_values is false" do
+      cluster = Clumpy::Cluster.new(point, 10, values_threshold: 10, include_values: false)
+      cluster.value_list.should eq []
+    end
+  end
+
   context "#contains" do
     it "returns true if the given point is within the bounds" do
       cluster.contains?(point).should be_true

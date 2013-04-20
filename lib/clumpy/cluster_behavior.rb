@@ -34,8 +34,13 @@ module Clumpy
     end
 
     def value_list
-      values_threshold = @options[:values_threshold] || 10
-      (points.size < values_threshold) ? points : []
+      case @options[:include_values]
+      when true  then points
+      when false then []
+      else
+        values_threshold = @options[:values_threshold] || 10
+        points.size <= values_threshold ? points : []
+      end
     end
 
     def bounds_as_json
