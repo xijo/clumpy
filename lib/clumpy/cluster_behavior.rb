@@ -2,14 +2,17 @@ module Clumpy
   module ClusterBehavior
     attr_accessor :latitude, :longitude, :points, :bounds
 
-    def initialize(point, distance, options = {})
+    def initialize(point, options = {})
       @latitude  = point.latitude
       @longitude = point.longitude
       @points    = [point]
       @options   = options
+
+      lat_dist   = options[:latitude_distance]  || 10
+      lng_dist   = options[:longitude_distance] || 10
       @bounds    = OpenStruct.new(
-        latitude: (latitude - distance)..(latitude + distance),
-        longitude: (longitude - distance)..(longitude + distance)
+        latitude: (latitude - lat_dist)..(latitude + lat_dist),
+        longitude: (longitude - lng_dist)..(longitude + lng_dist)
       )
     end
 
@@ -51,7 +54,7 @@ module Clumpy
         },
         southwest: {
           latitude: bounds.latitude.min,
-          longitude: bounds.longitude.max
+          longitude: bounds.longitude.min
         }
       }
     end

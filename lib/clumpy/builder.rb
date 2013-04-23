@@ -30,7 +30,7 @@ module Clumpy
       if parent_cluster
         parent_cluster.points << point
       else
-        clusters << cluster_class.new(point, cluster_distance, cluster_options)
+        clusters << cluster_class.new(point, cluster_options)
       end
     end
 
@@ -42,14 +42,20 @@ module Clumpy
       clusters.find { |c| c.contains?(point) }
     end
 
-    def cluster_distance
+    def cluster_latitude_distance
       latitude_distance / DISTANCE_MODIFIER
+    end
+
+    def cluster_longitude_distance
+      longitude_distance / (DISTANCE_MODIFIER * 2)
     end
 
     def cluster_options
       {
         values_threshold: options[:values_threshold],
-        include_values: options[:include_values]
+        include_values: options[:include_values],
+        latitude_distance: cluster_latitude_distance,
+        longitude_distance: cluster_longitude_distance
       }
     end
 
@@ -62,6 +68,14 @@ module Clumpy
         (options[:nelat] - options[:swlat]).abs
       else
         MAX_LATITUDE_DISTANCE
+      end
+    end
+
+    def longitude_distance
+      if options[:nelng] && options[:swlng]
+        (options[:nelng] - options[:swlng]).abs
+      else
+        MAX_LONGITUDE_DISTANCE
       end
     end
   end
