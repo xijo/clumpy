@@ -2,14 +2,14 @@ module Clumpy
   class Builder
     MAX_LATITUDE_DISTANCE  = 170.05115
     MAX_LONGITUDE_DISTANCE = 360
-    DISTANCE_MODIFIER      = 5
 
     attr_accessor :points, :options, :clusters
 
     def initialize(points, options = {})
-      @points   = points
-      @options  = options || {}
-      @clusters = []
+      @points            = points
+      @options           = options || {}
+      @distance_modifier = options.fetch(:distance_modifier) { 5 }
+      @clusters          = []
     end
 
     # Clusters the given points
@@ -43,11 +43,11 @@ module Clumpy
     end
 
     def cluster_latitude_distance
-      latitude_distance / DISTANCE_MODIFIER
+      latitude_distance / @distance_modifier
     end
 
     def cluster_longitude_distance
-      longitude_distance / (DISTANCE_MODIFIER * 2)
+      longitude_distance / (@distance_modifier * 2)
     end
 
     def cluster_options

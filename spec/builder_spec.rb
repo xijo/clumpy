@@ -14,6 +14,16 @@ describe Clumpy::Builder do
     builder.options.should eq({ foo: :bar })
   end
 
+  it "initializes the distance_modifier is none was given" do
+    builder = Clumpy::Builder.new([])
+    builder.instance_variable_get(:@distance_modifier).should_not be_nil
+  end
+
+  it 'takes the given distance modifier' do
+    builder = Clumpy::Builder.new([], distance_modifier: 12)
+    builder.instance_variable_get(:@distance_modifier).should eq 12
+  end
+
   context "#cluster" do
     it "creates clusters from points" do
       clusters = builder.cluster
