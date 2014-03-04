@@ -8,7 +8,7 @@ module Clumpy
     def initialize(points, options = {})
       @points            = points
       @options           = options || {}
-      @distance_modifier = options.fetch(:distance_modifier) { 5 }
+      @distance_modifier = options.fetch(:distance_modifier) { 16 }
       @clusters          = []
     end
 
@@ -42,20 +42,15 @@ module Clumpy
       clusters.find { |c| c.contains?(point) }
     end
 
-    def cluster_latitude_distance
-      latitude_distance / @distance_modifier
-    end
-
-    def cluster_longitude_distance
-      longitude_distance / (@distance_modifier * 2)
+    def cluster_side_length
+      @cluster_size ||= (latitude_distance + longitude_distance) / @distance_modifier
     end
 
     def cluster_options
       {
         values_threshold: options[:values_threshold],
         include_values: options[:include_values],
-        latitude_distance: cluster_latitude_distance,
-        longitude_distance: cluster_longitude_distance
+        side_length: cluster_side_length
       }
     end
 

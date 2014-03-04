@@ -8,11 +8,10 @@ module Clumpy
       @points    = [point]
       @options   = options
 
-      lat_dist   = options[:latitude_distance]  || 10
-      lng_dist   = options[:longitude_distance] || 10
+      side_length = options.fetch(:side_length) { 10 }
       @bounds    = OpenStruct.new(
-        latitude: (latitude - lat_dist)..(latitude + lat_dist),
-        longitude: (longitude - lng_dist)..(longitude + lng_dist)
+        latitude: (latitude - side_length)..(latitude + side_length),
+        longitude: (longitude - side_length)..(longitude + side_length)
       )
     end
 

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Clumpy::ClusterBehavior do
   let(:point)       { OpenStruct.new(latitude: 15, longitude: 20) }
   let(:other_point) { OpenStruct.new(latitude: 40, longitude: 40) }
-  let(:cluster)     { Clumpy::Cluster.new(point, latitude_distance: 10, longitude_distance: 10) }
+  let(:cluster)     { Clumpy::Cluster.new(point, side_length: 10) }
 
   it "has a nicish to_s representation" do
     cluster.to_s.should include '# size: 1'
