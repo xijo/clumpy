@@ -11,7 +11,7 @@ module Clumpy
       side_length = options.fetch(:side_length) { 10 }
       @bounds    = OpenStruct.new(
         latitude: (latitude - side_length)..(latitude + side_length),
-        longitude: (longitude - side_length)..(longitude + side_length)
+        longitude: (longitude - side_length*2)..(longitude + side_length*2)
       )
     end
 
