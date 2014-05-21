@@ -2,11 +2,11 @@ module Clumpy
   module Extensions
     module SunspotHit
       def latitude
-        stored(:lat)
+        @latitude ||= stored(:lat)
       end
 
       def longitude
-        stored(:lng)
+        @longitude ||= stored(:lng)
       end
 
       def as_json(*)
