@@ -1,18 +1,18 @@
 module Clumpy
   module Extensions
-    module SunspotHit
+    module ChewyHit
       def latitude
-        @latitude ||= stored(:lat)
+        @latitude ||= lat.to_f
       end
 
       def longitude
-        @longitude ||= stored(:lng)
+        @longitude ||= lng.to_f
       end
 
       def as_json(*)
         {
-          id: primary_key,
-          type: class_name
+          id:   id,
+          type: _source.full?(:type) || type.classify
         }
       end
     end
