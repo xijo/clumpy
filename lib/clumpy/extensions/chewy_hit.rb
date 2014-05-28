@@ -1,18 +1,22 @@
 module Clumpy
   module Extensions
-    module ChewyHit
+    class ChewyHit
+      def initialize(original_hash)
+        @original_hash = original_hash
+      end
+
       def latitude
-        @latitude ||= _source.lat.to_f
+        @original_hash['_source']['lat'].to_f
       end
 
       def longitude
-        @longitude ||= _source.lng.to_f
+        @original_hash['_source']['lng'].to_f
       end
 
       def as_json(*)
         {
-          id:   _source.id,
-          type: _source.full?(:type) || type.classify
+          id:   @original_hash['_source']['id'],
+          type: @original_hash['_source']['type']
         }
       end
     end
