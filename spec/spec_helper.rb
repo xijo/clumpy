@@ -9,7 +9,3 @@ SimpleCov.start 'gem'
 
 require 'clumpy'
 require 'ostruct'
-
-RSpec.configure do |config|
-  config.color_enabled = true
-end
