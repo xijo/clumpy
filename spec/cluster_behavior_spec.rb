@@ -50,11 +50,11 @@ describe Clumpy::ClusterBehavior do
 
   context "#contains" do
     it "returns true if the given point is within the bounds" do
-      cluster.contains?(point).should be_true
+      cluster.contains?(point).should eq true
     end
 
     it "returns false for a points that isn't contained" do
-      cluster.contains?(other_point).should be_false
+      cluster.contains?(other_point).should eq false
     end
   end
 end
