@@ -15,7 +15,7 @@ As part of the Gemfile or by hand, nothing unusual here.
 
 Clumpy takes points, typically geocoordinates, and puts them together into clusters.
 
-It requires the given points to be ruby objects, responding to `latitude` and `longitude` methods.
+It requires the given points to be ruby objects, responding to `#latitude` and `#longitude` methods.
 
 ```ruby
 require 'ostruct'
