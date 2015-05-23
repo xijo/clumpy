@@ -10,66 +10,66 @@ describe Clumpy::Builder do
 
   it "takes points and options" do
     builder = Clumpy::Builder.new(points, { foo: :bar })
-    builder.points.should eq points
-    builder.options.should eq({ foo: :bar })
+    expect(builder.points).to eq points
+    expect(builder.options).to eq({ foo: :bar })
   end
 
   it "initializes the distance_modifier is none was given" do
     builder = Clumpy::Builder.new([])
-    builder.instance_variable_get(:@distance_modifier).should_not be_nil
+    expect(builder.instance_variable_get(:@distance_modifier)).not_to be_nil
   end
 
   it 'takes the given distance modifier' do
     builder = Clumpy::Builder.new([], distance_modifier: 12)
-    builder.instance_variable_get(:@distance_modifier).should eq 12
+    expect(builder.instance_variable_get(:@distance_modifier)).to eq 12
   end
 
   context "#cluster" do
     it "creates clusters from points" do
       clusters = builder.cluster
-      clusters.size.should eq 2
-      clusters.first.points.should eq [point1, point2]
-      clusters.last.points.should eq [point3]
+      expect(clusters.size).to eq 2
+      expect(clusters.first.points).to eq [point1, point2]
+      expect(clusters.last.points).to eq [point3]
     end
   end
 
   it "passes the values threshold through to the cluster" do
     builder = Clumpy::Builder.new([point1], values_threshold: 100, include_values: true)
-    builder.cluster_options.should eq({ values_threshold: 100, include_values: true, side_length: 33.128196875 })
+    expect(builder.cluster_options).to eq({ values_threshold: 100, include_values: true, side_length: 33.128196875 })
     clusters = builder.cluster
-    clusters.first.instance_variable_get(:@options).should eq builder.cluster_options
+    expect(clusters.first.instance_variable_get(:@options)).to eq builder.cluster_options
   end
 
   context "#add_to_cluster" do
     it "creates a new cluster if there is no matching" do
-      builder.clusters.should be_empty
+      expect(builder.clusters).to be_empty
       builder.add_to_cluster(point1)
-      builder.clusters.size.should eq 1
+      expect(builder.clusters.size).to eq 1
     end
 
     it "will not create a cluster if the given value is not a true point" do
-      builder.clusters.should be_empty
+      expect(builder.clusters).to be_empty
       builder.add_to_cluster(:foo)
-      builder.clusters.should be_empty
+      expect(builder.clusters).to be_empty
     end
 
     it "appends markers to a existing cluster if they match" do
       builder.clusters << Clumpy::Cluster.new(point1, builder.cluster_options)
-      builder.clusters.size.should eq 1
-      builder.clusters.first.points.size.should eq 1
+      expect(builder.clusters.size).to eq 1
+      expect(builder.clusters.first.points.size).to eq 1
       builder.add_to_cluster(point2)
-      builder.clusters.size.should eq 1
-      builder.clusters.first.points.size.should eq 2
+      expect(builder.clusters.size).to eq 1
+      expect(builder.clusters.first.points.size).to eq 2
     end
   end
 
   it "calculates the latitude distance" do
-    builder.latitude_distance.should eq Clumpy::Builder::MAX_LATITUDE_DISTANCE
+    expect(builder.latitude_distance).to eq Clumpy::Builder::MAX_LATITUDE_DISTANCE
     builder.options = { nelat: -30, swlat: 40 }
-    builder.latitude_distance.should eq 70
+    expect(builder.latitude_distance).to eq 70
     builder.options = { nelat: -30, swlat: -35 }
-    builder.latitude_distance.should eq 5
+    expect(builder.latitude_distance).to eq 5
     builder.options = { nelat: 20, swlat: 35 }
-    builder.latitude_distance.should eq 15
+    expect(builder.latitude_distance).to eq 15
   end
 end
