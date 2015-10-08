@@ -8,7 +8,7 @@ module Clumpy
       @points    = [point]
       @options   = options
 
-      @bounds    = Bounds.new(@latitude, @longitude, options[:side_length])
+      @bounds    = Bounds.new(@latitude, @longitude, options[:width], options[:length])
     end
 
     def contains?(point)
@@ -22,11 +22,22 @@ module Clumpy
     end
 
     def as_json(*)
+      bounds =  {
+        northeast: {
+          latitude: @points.map(&:latitude).max,
+          longitude: @points.map(&:longitude).max,
+        },
+        southwest: {
+          latitude: @points.map(&:latitude).min,
+          longitude: @points.map(&:longitude).min,
+        }
+      }
+
       {
         latitude:  latitude,
         longitude: longitude,
         size:      @points.size,
-        bounds:    @bounds.as_json,
+        bounds:    bounds,
         values:    value_list,
       }
     end

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Clumpy::ClusterBehavior do
   let(:point)       { OpenStruct.new(latitude: 15, longitude: 20) }
   let(:other_point) { OpenStruct.new(latitude: 40, longitude: 40) }
-  let(:cluster)     { Clumpy::Cluster.new(point, side_length: 10) }
+  let(:cluster)     { Clumpy::Cluster.new(point, width: 20, length: 10) }
 
   it "has a nicish to_s representation" do
     expect(cluster.to_s).to include '# size: 1'
@@ -27,23 +27,23 @@ describe Clumpy::ClusterBehavior do
 
   context "#value_list" do
     it "returns an empty array if threshold isn't reached" do
-      cluster = Clumpy::Cluster.new(point, values_threshold: 1)
+      cluster = Clumpy::Cluster.new(point, values_threshold: 1, width: 20, length: 10)
       cluster.points << other_point
       expect(cluster.value_list).to eq []
     end
 
     it "returns an array of json points if under threshold" do
-      cluster = Clumpy::Cluster.new(point, values_threshold: 1)
+      cluster = Clumpy::Cluster.new(point, values_threshold: 1, width: 20, length: 10)
       expect(cluster.value_list).to eq [point]
     end
 
     it "returns a list of values if include_values is true" do
-      cluster = Clumpy::Cluster.new(point, values_threshold: 0, include_values: true)
+      cluster = Clumpy::Cluster.new(point, values_threshold: 0, include_values: true, width: 20, length: 10)
       expect(cluster.value_list).to eq [point]
     end
 
     it "returns a empty list if include_values is false" do
-      cluster = Clumpy::Cluster.new(point, values_threshold: 10, include_values: false)
+      cluster = Clumpy::Cluster.new(point, values_threshold: 10, include_values: false, width: 20, length: 10)
       expect(cluster.value_list).to eq []
     end
   end

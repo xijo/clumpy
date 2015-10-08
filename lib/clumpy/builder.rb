@@ -42,15 +42,20 @@ module Clumpy
       clusters.find { |c| c.contains?(point) }
     end
 
-    def cluster_side_length
-      @cluster_size ||= (latitude_distance + longitude_distance) / @distance_modifier
+    def cluster_width
+      @cluster_width ||= longitude_distance / @distance_modifier
+    end
+
+    def cluster_length
+      @cluster_length ||= latitude_distance / @distance_modifier
     end
 
     def cluster_options
       {
         values_threshold: options[:values_threshold],
         include_values: options[:include_values],
-        side_length: cluster_side_length
+        width: cluster_width,
+        length: cluster_length,
       }
     end
 

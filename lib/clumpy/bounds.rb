@@ -1,9 +1,10 @@
 module Clumpy
   class Bounds
-    def initialize(latitude, longitude, side_length)
-      side_length ||= 10
-      @latitude  = (latitude - side_length)..(latitude + side_length)
-      @longitude = (longitude - side_length*2)..(longitude + side_length*2)
+    def initialize(latitude, longitude, width, length)
+      l = length / 2
+      w = width / 2
+      @latitude  = (latitude - l)..(latitude + l)
+      @longitude = (longitude - w)..(longitude + w)
     end
 
     attr_reader :latitude
